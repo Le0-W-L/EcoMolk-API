@@ -1,0 +1,34 @@
+name: DAST Analysis with Syhunt
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  dast_scan:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v3
+
+      - name: Baixar e instalar o Syhunt
+        run: |
+          wget https://www.syhunt.com/syhunt-hybrid.tgz
+          tar -xvzf syhunt-hybrid.tgz
+          sudo mv syhunt /usr/local/bin/
+          rm syhunt-hybrid.tgz
+
+      - name: Executar Análise DAST
+        run: |
+          syhunt hybrid scan -u "https://seu-site-alvo.com" --dast --output report.html
+
+      - name: Upload do Relatório
+        uses: actions/upload-artifact@v3
+        with:
+          name: dast-report
+          path: report.html
