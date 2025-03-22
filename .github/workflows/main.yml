@@ -18,7 +18,7 @@ jobs:
           
       - name: Executar Análise DAST
         run: |
-          "C:\Program Files\Syhunt\SyhuntHybrid.exe" scan -u "https://github.com/Le0-W-L/EcoMolk.git" --dast --output report.html
+          & "C:\Program Files\Syhunt\SyhuntHybrid.exe" scan -u "https://github.com/Le0-W-L/EcoMolk.git" --dast --output report.html
 
       - name: Upload do Relatório
         uses: actions/upload-artifact@v4
