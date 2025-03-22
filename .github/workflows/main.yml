@@ -1,0 +1,18 @@
+name: syhunt test
+on:
+  push:
+    branches:
+      - main
+jobs:
+  build:
+    runs-on: [self-hosted, Windows, X64]
+    steps:
+      - uses: actions/checkout@v2
+      - run: Start-DynamicScan -target 'https://github.com/Le0-W-L/EcoMolk.git' -pfcond 'fail-if:risk=mediumup' -output 'report.pdf'
+      - name: 'Syhunt Report'
+        uses: actions/upload-artifact@v2
+        if: failure()
+        with:
+         name: syhunt-report
+         path: report.pdf
+         if-no-files-found: error
