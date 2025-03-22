@@ -28,7 +28,7 @@ jobs:
           syhunt hybrid scan -u "https://github.com/Le0-W-L/EcoMolk.git" --dast --output report.html
 
       - name: Upload do Relatório
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: dast-report
           path: report.html
