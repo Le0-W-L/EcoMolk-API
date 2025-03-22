@@ -1,35 +1,8 @@
-name: DAST Analysis with Syhunt
+# Create a folder under the drive root
+$ mkdir actions-runner; cd actions-runner
 
-on:
-  push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
+# Download the latest runner package
+$ Invoke-WebRequest -Uri https://github.com/actions/runner/releases/download/v2.323.0/actions-runner-win-x64-2.323.0.zip -OutFile actions-runner-win-x64-2.323.0.zip
 
-jobs:
-  dast_scan:
-    runs-on: windows-latest  
-
-    steps:
-      - name: Checkout do código
-        uses: actions/checkout@v4
-
-      - name: Baixar Syhunt
-        run: |
-          Invoke-WebRequest -Uri "https://syhunt.fra1.cdn.digitaloceanspaces.com/community/syhunt-community-7.0.10.3.exe" -OutFile syhunt-installer.exe
-
-      - name: Instalar Syhunt
-        run: |
-          Start-Process -FilePath syhunt-installer.exe -ArgumentList "/S /log=install.log" -NoNewWindow -Wait Get-Content install.log
-          
-      - name: Executar Análise DAST
-        run: |
-          "C:\Program Files\Syhunt\SyhuntHybrid.exe" scan -u "https://seu-site-alvo.com" --dast --output report.html
-
-      - name: Upload do Relatório
-        uses: actions/upload-artifact@v4
-        with:
-          name: dast-report
-          path: report.html
+# Extract the installer
+$ Add-Type -AssemblyName System.IO.Compression.FileSystem ; [System.IO.Compression.ZipFile]::ExtractToDirectory("$PWD/actions-runner-win-x64-2.323.0.zip", "$PWD")
