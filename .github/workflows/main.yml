@@ -10,7 +10,7 @@ on:
 
 jobs:
   dast_scan:
-    runs-on: windows-latest  
+    runs-on: self-hosted  
 
     steps:
       - name: Checkout do código
