@@ -22,7 +22,7 @@ jobs:
 
       - name: Instalar Syhunt
         run: |
-          Start-Process -FilePath syhunt-installer.exe -ArgumentList "/S /log=install.log" -NoNewWindow -Wait Get-Content install.log
+          Start-Process -FilePath syhunt-installer.exe -ArgumentList "/S" -NoNewWindow -Wait
           
       - name: Executar Análise DAST
         run: |
