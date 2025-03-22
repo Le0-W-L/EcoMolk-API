@@ -1,18 +1,35 @@
-name: syhunt test
+name: DAST Analysis with Syhunt
+
 on:
   push:
     branches:
       - main
+  pull_request:
+    branches:
+      - main
+
 jobs:
-  build:
-    runs-on: [self-hosted, Windows, X64]
+  dast_scan:
+    runs-on: windows-latest  
+
     steps:
-      - uses: actions/checkout@v2
-      - run: Start-DynamicScan -target 'https://github.com/Le0-W-L/EcoMolk.git' -pfcond 'fail-if:risk=mediumup' -output 'report.pdf'
-      - name: 'Syhunt Report'
-        uses: actions/upload-artifact@v2
-        if: failure()
+      - name: Checkout do código
+        uses: actions/checkout@v4
+
+      - name: Baixar Syhunt
+        run: |
+          Invoke-WebRequest -Uri "https://syhunt.fra1.cdn.digitaloceanspaces.com/community/syhunt-community-7.0.10.3.exe" -OutFile syhunt-installer.exe
+
+      - name: Instalar Syhunt
+        run: |
+          Start-Process -FilePath syhunt-installer.exe -ArgumentList "/S /log=install.log" -NoNewWindow -Wait Get-Content install.log
+          
+      - name: Executar Análise DAST
+        run: |
+          "C:\Program Files\Syhunt\SyhuntHybrid.exe" scan -u "https://seu-site-alvo.com" --dast --output report.html
+
+      - name: Upload do Relatório
+        uses: actions/upload-artifact@v4
         with:
-         name: syhunt-report
-         path: report.pdf
-         if-no-files-found: error
+          name: dast-report
+          path: report.html
