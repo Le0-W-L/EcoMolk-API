@@ -22,8 +22,9 @@ jobs:
 
       - name: Instalar Syhunt
         run: |
-          Start-Process -FilePath syhunt-installer.exe -ArgumentList "/S" -NoNewWindow -Wait -Timeout 300
-
+          Start-Process -FilePath syhunt-installer.exe -ArgumentList "/S /log=install.log" -NoNewWindow -Wait 
+          Get-Content install.log
+          
       - name: Executar Análise DAST
         run: |
           "C:\Program Files\Syhunt\SyhuntHybrid.exe" scan -u "https://seu-site-alvo.com" --dast --output report.html
