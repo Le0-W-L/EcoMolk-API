@@ -14,7 +14,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-      - run: Start-CodeScan -pfcond 'medium' -output 'report.pdf'
+      - run: Start-CodeScan -target 'https://github.com/Le0-W-L/EcoMolk.git' -pfcond 'medium' -output 'report.pdf'
       - name: 'Syhunt Report'
         uses: actions/upload-artifact@v4
         if: failure()
