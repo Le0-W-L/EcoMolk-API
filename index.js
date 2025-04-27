@@ -814,13 +814,7 @@ app.get('/interessesResiduos', verificaLogin, async (req, res) => {
 
 
 
-app.listen(3000, () =>{
-    console.log('Servidor Funcionando');
-
-    async function abrirPagina(url) {
-        const open = await import('open')
-        open.default(url); 
-    }
-
-    abrirPagina('http://localhost:3000/landingPage')
-})
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+    console.log(`Servidor Funcionando na porta ${PORT}`);
+});
