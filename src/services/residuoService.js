@@ -6,7 +6,7 @@ exports.criarResiduo = async (req) => {
   const imagemResiduo = req.file ? req.file.buffer : null;
 
   const novo = await Residuos.create({
-    id_usuario: req.session.userId,
+    id_usuario: req.usuario.id,
     tipo,
     descricao,
     quantidade,

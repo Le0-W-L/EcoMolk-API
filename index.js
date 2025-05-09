@@ -2,26 +2,12 @@ require("dotenv").config();
 const express = require("express");
 const app = express();
 const path = require("path");
-const session = require("express-session");
 const cors = require("cors");
 
 // Middlewares globais
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
-// Sessão em memória
-app.use(
-  session({
-    secret: "segredo",
-    resave: false,
-    saveUninitialized: false,
-    cookie: {
-      secure: true, // true só se tiver HTTPS
-      maxAge: 1000 * 60 * 60, // 1 hora
-    },
-  })
-);
 
 // Conexão com banco
 const connectDatabase = require("./src/config/conn");
