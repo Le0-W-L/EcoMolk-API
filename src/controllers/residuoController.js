@@ -7,15 +7,13 @@ exports.criarResiduo = async (req, res) => {
   } catch (error) {
     res
       .status(500)
-      .json({ message: "Erro no controller.", error: error.message });
+      .json({ message: "Erro ao criar resíduo.", error: error.message });
   }
 };
 
 exports.listarResiduosDoUsuario = async (req, res) => {
   try {
-    const result = await residuoService.listarResiduosDoUsuario(
-      req.session.userId
-    );
+    const result = await residuoService.listarResiduosDoUsuario(req.usuario.id);
     res.status(result.status).json(result.data);
   } catch (error) {
     res
@@ -27,7 +25,7 @@ exports.listarResiduosDoUsuario = async (req, res) => {
 exports.listarResiduosDeOutrosUsuarios = async (req, res) => {
   try {
     const result = await residuoService.listarResiduosDeOutrosUsuarios(
-      req.session.userId
+      req.usuario.id
     );
     res.status(result.status).json(result.data);
   } catch (error) {
@@ -43,7 +41,7 @@ exports.listarResiduosDeOutrosUsuarios = async (req, res) => {
 exports.conectarResiduo = async (req, res) => {
   try {
     const result = await residuoService.conectarResiduo(
-      req.session.userId,
+      req.usuario.id,
       req.body.residuoId
     );
     res.status(result.status).json(result.data);

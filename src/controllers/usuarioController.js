@@ -45,7 +45,7 @@ exports.cadastrar = async (req, res) => {
 
 exports.dadosUsuario = async (req, res) => {
   try {
-    const result = await usuarioService.dadosUsuario(req.session.userId);
+    const result = await usuarioService.dadosUsuario(req.usuario.id);
     res.status(result.status).json(result.data);
   } catch (error) {
     res
@@ -56,7 +56,7 @@ exports.dadosUsuario = async (req, res) => {
 
 exports.outrosUsuarios = async (req, res) => {
   try {
-    const result = await usuarioService.outrosUsuarios(req.session.userId);
+    const result = await usuarioService.outrosUsuarios(req.usuario.id);
     res.status(result.status).json(result.data);
   } catch (error) {
     res

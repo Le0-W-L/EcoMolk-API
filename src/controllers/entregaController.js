@@ -2,7 +2,7 @@ const entregaService = require("../services/entregaService");
 
 exports.entregasNegociando = async (req, res) => {
   try {
-    const result = await entregaService.entregasNegociando(req.session.userId);
+    const result = await entregaService.entregasNegociando(req.usuario.id);
     res.status(result.status).json(result.data);
   } catch (error) {
     res
@@ -16,7 +16,7 @@ exports.entregasNegociando = async (req, res) => {
 
 exports.nomeEmpresaUsuario = async (req, res) => {
   try {
-    const result = await entregaService.nomeEmpresaUsuario(req.session.userId);
+    const result = await entregaService.nomeEmpresaUsuario(req.usuario.id);
     res.status(result.status).json(result.data);
   } catch (error) {
     res
