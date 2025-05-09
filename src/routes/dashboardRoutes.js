@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const dashboardController = require('../controllers/dashboardController');
-const verificaLogin = require('../middleware/verificaLogin');
+const verificaLogin = require('../middleware/verify-token');
 
 router.get('/total-parceiros', verificaLogin, dashboardController.totalParceiros);
 router.get('/residuos-disponiveis', verificaLogin, dashboardController.residuosDisponiveis);

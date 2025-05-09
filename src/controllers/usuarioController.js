@@ -1,10 +1,32 @@
 const usuarioService = require("../services/usuarioService");
+const jwt = require("jsonwebtoken");
+require("dotenv").config();
 
 exports.login = async (req, res) => {
   try {
     const { email, senha } = req.body;
-    const result = await usuarioService.login(email, senha, req);
-    res.status(result.status).json(result.data);
+    const result = await usuarioService.login(email, senha);
+
+    if (result.status !== 200) {
+      return res.status(result.status).json(result.data);
+    }
+
+    const token = jwt.sign(
+      {
+        id: result.data.usuario.id,
+        nome_empresa: result.data.usuario.nome_empresa,
+      },
+      process.env.JWT_SECRET,
+      {
+        expiresIn: "1h",
+      }
+    );
+
+    return res.status(200).json({
+      message: "Login bem sucedido.",
+      token,
+      usuario: result.data.usuario,
+    });
   } catch (error) {
     res.status(500).json({ message: "Erro no login.", error: error.message });
   }

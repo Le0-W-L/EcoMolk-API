@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const residuoController = require('../controllers/residuoController');
-const verificaLogin = require('../middleware/verificaLogin');
+const verificaLogin = require('../middleware/verify-token');
 const multer = require('multer');
 
 const storage = multer.memoryStorage();
