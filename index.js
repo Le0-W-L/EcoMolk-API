@@ -44,11 +44,11 @@ app.use(express.static(path.join(__dirname, "src", "views")));
 
 // Rota da Landing Page
 app.get("/", (req, res) =>
-  res.sendFile(path.join(__dirname, "src", "views", "landingPage.html"))
+  res.sendFile(path.join(__dirname, "src", "views", "LandingPage", "landingPage.html"))
 );
 
 // Inicialização do servidor
-const PORT = process.env.PORT || 8080;
+const PORT = process.env.PORT || 8081;
 app.listen(PORT, () => {
   console.log(`Servidor rodando na porta ${PORT}`);
 });
