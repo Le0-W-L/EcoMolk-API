@@ -17,9 +17,7 @@ exports.login = async (req, res) => {
         nome_empresa: result.data.usuario.nome_empresa,
       },
       process.env.JWT_SECRET,
-      {
-        expiresIn: "1h",
-      }
+      { expiresIn: "1h" }
     );
 
     return res.status(200).json({
@@ -34,7 +32,14 @@ exports.login = async (req, res) => {
 
 exports.cadastrar = async (req, res) => {
   try {
-    const result = await usuarioService.cadastrar(req.body);
+    const { nome, email, senha, telefone, nome_empresa } = req.body;
+    const result = await usuarioService.cadastrar({
+      nome,
+      email,
+      senha,
+      telefone,
+      nome_empresa,
+    });
     res.status(result.status).json(result.data);
   } catch (error) {
     res
