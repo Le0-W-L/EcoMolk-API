@@ -18,12 +18,14 @@ const usuarioRoutes = require("./src/routes/usuarioRoutes");
 const residuoRoutes = require("./src/routes/residuoRoutes");
 const dashboardRoutes = require("./src/routes/dashboardRoutes");
 const entregaRoutes = require("./src/routes/entregaRoutes");
+// const emailRoutes = require("./src/routes/emailRoutes");
 
 // Registro das rotas
 app.use("/usuarios", usuarioRoutes);
 app.use("/residuos", residuoRoutes);
 app.use("/dashboard", dashboardRoutes);
 app.use("/entregas", entregaRoutes);
+// app.use("/email", emailRoutes);
 
 // Servir arquivos estáticos (páginas HTML)
 app.use(express.static(path.join(__dirname, "src", "views")));

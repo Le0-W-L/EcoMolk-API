@@ -9,6 +9,11 @@
 # Ignore environment variables
 .env
 
+# Ignore IDE specific files
+/src/controllers/emailController.js
+/src/routes/emailRoutes.js
+/src/services/emailService.js
+
 # Node
 /node_modules
 npm-debug.log
