@@ -2,7 +2,7 @@ const residuoService = require("../services/residuoService");
 
 exports.criarResiduo = async (req, res) => {
   try {
-    const result = await residuoService.criarResiduo(req.body, req.usuario.id, req.file);
+    const result = await residuoService.criarResiduo(req);
     res.status(result.status).json(result.data);
   } catch (error) {
     res
