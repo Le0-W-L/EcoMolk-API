@@ -57,7 +57,7 @@ Residuos.init({
     },
 
     imagem_residuo: {
-        type: DataTypes.BLOB,
+        type: DataTypes.STRING,
         allowNull: true
     },
 
@@ -82,6 +82,5 @@ Residuos.init({
 Residuos.belongsTo(Users, { foreignKey: 'id_usuario', as: 'usuario' });
 
 Residuos.belongsTo(Users, { foreignKey: 'id_usuario_interessado', as: 'usuarioInteressado' });
-
 
 module.exports = Residuos;

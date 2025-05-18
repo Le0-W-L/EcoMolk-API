@@ -29,6 +29,7 @@ app.use("/entregas", entregaRoutes);
 
 // Servir arquivos estáticos (páginas HTML)
 app.use(express.static(path.join(__dirname, "src", "views")));
+app.use('/uploads', express.static(path.join(__dirname, 'public', 'uploads')));
 
 // Rota da Landing Page
 app.get("/", (req, res) =>
