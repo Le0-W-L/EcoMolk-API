@@ -3,7 +3,7 @@ const Users = require('../models/users');
 
 exports.criarResiduo = async (req) => {
   const { tipo, descricao, quantidade, forma_descarte, tipo_entrega } = req.body;
-  const imagemResiduo = req.file ? req.file.buffer : null;
+  const imagem = req.file ? req.file.filename : null;
 
   const novo = await Residuos.create({
     id_usuario: req.usuario.id,
@@ -12,7 +12,7 @@ exports.criarResiduo = async (req) => {
     quantidade,
     forma_descarte,
     tipo_entrega,
-    imagem_residuo: imagemResiduo
+    imagem_residuo: imagem,
   });
 
   return {
