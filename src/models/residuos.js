@@ -69,7 +69,7 @@ Residuos.init({
 
     data_entrega: {
         type: DataTypes.DATE,
-        defaultValue: DataTypes.NOW,
+        defaultValue: null,
     }
 
 }, {
