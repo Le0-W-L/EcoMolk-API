@@ -6,7 +6,7 @@ async function conn() {
         await sequelize.authenticate(); 
         console.log('Conexão estabelecida com sucesso.')
 
-        await sequelize.sync({ force: true }) //{force: false} --> GARANTE QUE AS TABELAS JA EXISTENTES NÃO SEJAM SOBRESCRITAS
+        await sequelize.sync({ force: false }) //{force: false} --> GARANTE QUE AS TABELAS JA EXISTENTES NÃO SEJAM SOBRESCRITAS
         console.log('Tabelas sincronizadas com sucesso.')
     }
 
