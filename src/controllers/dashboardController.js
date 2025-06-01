@@ -153,3 +153,138 @@ exports.interessesResiduos = async (req, res) => {
       });
   }
 };
+
+// Resíduos disponíveis do próprio usuário
+exports.meusResiduosDisponiveis = async (req, res) => {
+  try {
+    const result = await dashboardService.meusResiduosDisponiveis(req.usuario.id);
+    res.status(result.status).json(result.data);
+  } catch (error) {
+    res
+      .status(500)
+      .json({
+        message: "Erro ao buscar meus resíduos disponíveis.",
+        error: error.message,
+      });
+  }
+};
+
+// Resíduos negociando do próprio usuário
+exports.meusResiduosNegociando = async (req, res) => {
+  try {
+    const result = await dashboardService.meusResiduosNegociando(req.usuario.id);
+    res.status(result.status).json(result.data);
+  } catch (error) {
+    res
+      .status(500)
+      .json({
+        message: "Erro ao buscar meus resíduos negociando.",
+        error: error.message,
+      });
+  }
+};
+
+// Resíduos concluídos do próprio usuário
+exports.meusResiduosConcluidos = async (req, res) => {
+  try {
+    const result = await dashboardService.meusResiduosConcluidos(req.usuario.id);
+    res.status(result.status).json(result.data);
+  } catch (error) {
+    res
+      .status(500)
+      .json({
+        message: "Erro ao buscar meus resíduos concluídos.",
+        error: error.message,
+      });
+  }
+};
+
+// Resíduos cancelados do próprio usuário
+exports.meusResiduosCancelados = async (req, res) => {
+  try {
+    const result = await dashboardService.meusResiduosCancelados(req.usuario.id);
+    res.status(result.status).json(result.data);
+  } catch (error) {
+    res
+      .status(500)
+      .json({
+        message: "Erro ao buscar meus resíduos cancelados.",
+        error: error.message,
+      });
+  }
+};
+
+// Total de resíduos do próprio usuário
+exports.meusTotalResiduos = async (req, res) => {
+  try {
+    const result = await dashboardService.meusTotalResiduos(req.usuario.id);
+    res.status(result.status).json(result.data);
+  } catch (error) {
+    res
+      .status(500)
+      .json({
+        message: "Erro ao buscar total dos meus resíduos.",
+        error: error.message,
+      });
+  }
+};
+
+// Tipos e quantidade de resíduos do próprio usuário
+exports.meusTiposQuantidade = async (req, res) => {
+  try {
+    const result = await dashboardService.meusTiposQuantidade(req.usuario.id);
+    res.status(result.status).json(result.data);
+  } catch (error) {
+    res
+      .status(500)
+      .json({
+        message: "Erro ao buscar tipos e quantidade dos meus resíduos.",
+        error: error.message,
+      });
+  }
+};
+
+// Porcentagem de resíduos concluídos do próprio usuário
+exports.meusPorcentagemConcluidos = async (req, res) => {
+  try {
+    const result = await dashboardService.meusPorcentagemConcluidos(req.usuario.id);
+    res.status(result.status).json(result.data);
+  } catch (error) {
+    res
+      .status(500)
+      .json({
+        message: "Erro ao buscar porcentagem dos meus resíduos concluídos.",
+        error: error.message,
+      });
+  }
+};
+
+// Empresas com mais interesse nos resíduos do próprio usuário
+exports.empresasMaisInteresseNosMeusResiduos = async (req, res) => {
+  try {
+    const result = await dashboardService.empresasMaisInteresseNosMeusResiduos(req.usuario.id);
+    res.status(result.status).json(result.data);
+  } catch (error) {
+    res
+      .status(500)
+      .json({
+        message: "Erro ao buscar empresas com mais interesse nos meus resíduos.",
+        error: error.message,
+      });
+  }
+};
+
+// Meus resíduos (lista completa)
+exports.meusResiduos = async (req, res) => {
+  try {
+    const result = await dashboardService.meusResiduos(req.usuario.id);
+    res.status(result.status).json(result.data);
+  } catch (error) {
+    res
+      .status(500)
+      .json({
+        message: "Erro ao buscar meus resíduos.",
+        error: error.message,
+      });
+  }
+};

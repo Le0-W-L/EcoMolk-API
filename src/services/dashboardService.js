@@ -248,3 +248,220 @@ exports.interessesResiduos = async (usuarioId) => {
     },
   };
 };
+
+// Resíduos disponíveis do próprio usuário
+exports.meusResiduosDisponiveis = async (usuarioId) => {
+  const count = await Residuos.count({
+    where: {
+      status_residuo: "disponivel",
+      id_usuario: usuarioId,
+    },
+  });
+
+  return {
+    status: 200,
+    data: { 
+      message: "Meus resíduos disponíveis recuperados com sucesso.",
+      quantidade: count 
+    },
+  };
+};
+
+// Resíduos negociando do próprio usuário
+exports.meusResiduosNegociando = async (usuarioId) => {
+  const count = await Residuos.count({
+    where: {
+      status_residuo: "negociando",
+      id_usuario: usuarioId,
+    },
+  });
+
+  return {
+    status: 200,
+    data: { 
+      message: "Meus resíduos negociando recuperados com sucesso.",
+      quantidade: count 
+    },
+  };
+};
+
+// Resíduos concluídos do próprio usuário
+exports.meusResiduosConcluidos = async (usuarioId) => {
+  const count = await Residuos.count({
+    where: {
+      status_residuo: "concluido",
+      id_usuario: usuarioId,
+    },
+  });
+
+  return {
+    status: 200,
+    data: { 
+      message: "Meus resíduos concluídos recuperados com sucesso.",
+      quantidade: count 
+    },
+  };
+};
+
+// Resíduos cancelados do próprio usuário
+exports.meusResiduosCancelados = async (usuarioId) => {
+  const count = await Residuos.count({
+    where: {
+      status_residuo: "cancelado",
+      id_usuario: usuarioId,
+    },
+  });
+
+  return {
+    status: 200,
+    data: { 
+      message: "Meus resíduos cancelados recuperados com sucesso.",
+      quantidade: count 
+    },
+  };
+};
+
+// Total de resíduos do próprio usuário
+exports.meusTotalResiduos = async (usuarioId) => {
+  const total = await Residuos.count({
+    where: { id_usuario: usuarioId },
+  });
+
+  return {
+    status: 200,
+    data: {
+      message: "Total dos meus resíduos recuperado com sucesso.",
+      total,
+    },
+  };
+};
+
+// Tipos e quantidade de resíduos do próprio usuário
+exports.meusTiposQuantidade = async (usuarioId) => {
+  const tipos = await Residuos.findAll({
+    attributes: [
+      "tipo",
+      [sequelize.fn("COUNT", sequelize.col("tipo")), "quantidade"],
+    ],
+    where: { id_usuario: usuarioId },
+    group: ["tipo"],
+    order: [[sequelize.literal("quantidade"), "DESC"]],
+  });
+
+  if (!tipos.length) {
+    return {
+      status: 404,
+      data: { message: "Nenhum tipo de resíduo encontrado para este usuário" },
+    };
+  }
+
+  const formatado = tipos.map((t) => ({
+    tipo: t.tipo,
+    quantidade: t.get("quantidade"),
+  }));
+
+  return {
+    status: 200,
+    data: {
+      message: "Tipos e quantidades dos meus resíduos recuperados com sucesso.",
+      tipos: formatado
+    },
+  };
+};
+
+// Porcentagem de resíduos concluídos do próprio usuário
+exports.meusPorcentagemConcluidos = async (usuarioId) => {
+  const residuos = await Residuos.findAll({
+    attributes: ['status_residuo'],
+    where: { id_usuario: usuarioId },
+  });
+
+  const total = residuos.length;
+  const concluidos = residuos.filter(
+    (r) => r.status_residuo === "concluido"
+  ).length;
+  const porcentagem = total > 0 ? (concluidos / total) * 100 : 0;
+
+  return {
+    status: 200,
+    data: {
+      message: "Porcentagem dos meus resíduos concluídos recuperada com sucesso.",
+      porcentagemConcluidos: `${porcentagem.toFixed(1)}%`,
+      totalResiduos: total,
+      residuosConcluidos: concluidos,
+    },
+  };
+};
+
+// Empresas com mais interesse nos resíduos do próprio usuário
+exports.empresasMaisInteresseNosMeusResiduos = async (usuarioId) => {
+  const resultado = await sequelize.query(
+    `SELECT u.nome_empresa, COUNT(r.id) AS quantidade_interesse
+     FROM residuos r
+     INNER JOIN users u ON r.id_usuario_interessado = u.id
+     WHERE r.id_usuario = :usuarioId AND r.id_usuario_interessado IS NOT NULL
+     GROUP BY u.nome_empresa
+     ORDER BY quantidade_interesse DESC
+     LIMIT 5`,
+    {
+      replacements: { usuarioId },
+      type: sequelize.QueryTypes.SELECT,
+    }
+  );
+
+  if (!resultado.length) {
+    return {
+      status: 404,
+      data: { message: "Nenhuma empresa encontrada com interesse nos seus resíduos." },
+    };
+  }
+
+  return {
+    status: 200,
+    data: {
+      message: "Empresas com mais interesse nos meus resíduos recuperadas com sucesso.",
+      empresas: resultado
+    },
+  };
+};
+
+// Meus resíduos (lista completa)
+exports.meusResiduos = async (usuarioId) => {
+  const residuos = await Residuos.findAll({
+    where: { id_usuario: usuarioId },
+    order: [['createdAt', 'DESC']],
+  });
+
+  if (!residuos.length) {
+    return {
+      status: 404,
+      data: { message: "Nenhum resíduo encontrado para este usuário." },
+    };
+  }
+
+  // Adicionar informações sobre empresas interessadas
+  const completos = await Promise.all(
+    residuos.map(async (r) => {
+      let empresaInteressada = null;
+      if (r.id_usuario_interessado) {
+        empresaInteressada = await Users.findOne({
+          where: { id: r.id_usuario_interessado },
+          attributes: ["nome_empresa"],
+        });
+      }
+
+      return {
+        ...r.toJSON(),
+        nome_empresa_interessada: empresaInteressada ? empresaInteressada.nome_empresa : null,
+      };
+    })
+  );
+
+  return {
+    status: 200,
+    data: {
+      message: "Meus resíduos recuperados com sucesso.",
+      residuos: completos,
+    },
+  };
+};
